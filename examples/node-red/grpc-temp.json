@@ -1,0 +1,451 @@
+[
+    {
+        "id": "49c12e541a195f0e",
+        "type": "tab",
+        "label": "grpc-temp",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "4c082f3fe4b2064d",
+        "type": "group",
+        "z": "49c12e541a195f0e",
+        "name": "",
+        "style": {
+            "stroke": "#3f93cf",
+            "label": true
+        },
+        "nodes": [
+            "9ed63e96721f5042",
+            "9da3a7a059bc5fe1",
+            "6df36f03d6b7ea37",
+            "4034b140330dfb28",
+            "7e0090c5ba4dad6a"
+        ],
+        "x": 34,
+        "y": 479,
+        "w": 692,
+        "h": 142
+    },
+    {
+        "id": "9db4db966f7c17e5",
+        "type": "group",
+        "z": "49c12e541a195f0e",
+        "name": "",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "fb662e87ab774ae2",
+            "ff489bd28211fdaf",
+            "a4acdeec0cf02b6d",
+            "8bbebab087a38907",
+            "ee1bfd31d56671a2"
+        ],
+        "x": 34,
+        "y": 299,
+        "w": 712,
+        "h": 142
+    },
+    {
+        "id": "01e69d19865461bb",
+        "type": "group",
+        "z": "49c12e541a195f0e",
+        "name": "",
+        "style": {
+            "stroke": "#ff7f7f",
+            "label": true
+        },
+        "nodes": [
+            "7863e814c0c94109",
+            "c7f9236266025ac8",
+            "1014d1c653233f6f",
+            "f7e1520627c754fb",
+            "b05dcfe6a460caf3",
+            "7822cce799dbc0f5",
+            "ae8d28454d93d6a8",
+            "cb8a513535abc26e",
+            "705937a1a4b80501"
+        ],
+        "x": 74,
+        "y": 39,
+        "w": 932,
+        "h": 222
+    },
+    {
+        "id": "9ed63e96721f5042",
+        "type": "inject",
+        "z": "49c12e541a195f0e",
+        "g": "4c082f3fe4b2064d",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"name\":\"PCBTemperature0\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "7e0090c5ba4dad6a"
+            ]
+        ]
+    },
+    {
+        "id": "9da3a7a059bc5fe1",
+        "type": "debug",
+        "z": "49c12e541a195f0e",
+        "g": "4c082f3fe4b2064d",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6df36f03d6b7ea37",
+        "type": "grpc-call",
+        "z": "49c12e541a195f0e",
+        "g": "4c082f3fe4b2064d",
+        "name": "",
+        "server": "4524d7db0e7e9c53",
+        "service": "TemperatureSensor",
+        "method": "Read",
+        "chain": "",
+        "key": "",
+        "x": 450,
+        "y": 580,
+        "wires": [
+            [
+                "9da3a7a059bc5fe1"
+            ]
+        ]
+    },
+    {
+        "id": "4034b140330dfb28",
+        "type": "comment",
+        "z": "49c12e541a195f0e",
+        "g": "4c082f3fe4b2064d",
+        "name": "Read temperature",
+        "info": "",
+        "x": 150,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7e0090c5ba4dad6a",
+        "type": "function",
+        "z": "49c12e541a195f0e",
+        "g": "4c082f3fe4b2064d",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 580,
+        "wires": [
+            [
+                "6df36f03d6b7ea37"
+            ]
+        ]
+    },
+    {
+        "id": "fb662e87ab774ae2",
+        "type": "grpc-call",
+        "z": "49c12e541a195f0e",
+        "g": "9db4db966f7c17e5",
+        "name": "",
+        "server": "4524d7db0e7e9c53",
+        "service": "TemperatureSensor",
+        "method": "ListDevices",
+        "chain": "",
+        "key": "",
+        "x": 470,
+        "y": 400,
+        "wires": [
+            [
+                "a4acdeec0cf02b6d"
+            ]
+        ]
+    },
+    {
+        "id": "ff489bd28211fdaf",
+        "type": "inject",
+        "z": "49c12e541a195f0e",
+        "g": "9db4db966f7c17e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 400,
+        "wires": [
+            [
+                "ee1bfd31d56671a2"
+            ]
+        ]
+    },
+    {
+        "id": "a4acdeec0cf02b6d",
+        "type": "debug",
+        "z": "49c12e541a195f0e",
+        "g": "9db4db966f7c17e5",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "8bbebab087a38907",
+        "type": "comment",
+        "z": "49c12e541a195f0e",
+        "g": "9db4db966f7c17e5",
+        "name": "List temperature devices",
+        "info": "",
+        "x": 170,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "ee1bfd31d56671a2",
+        "type": "function",
+        "z": "49c12e541a195f0e",
+        "g": "9db4db966f7c17e5",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 400,
+        "wires": [
+            [
+                "fb662e87ab774ae2"
+            ]
+        ]
+    },
+    {
+        "id": "7863e814c0c94109",
+        "type": "inject",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "send-login-data",
+        "props": [
+            {
+                "p": "payload.username",
+                "v": "admin",
+                "vt": "str"
+            },
+            {
+                "p": "payload.password",
+                "v": "password",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 200,
+        "y": 140,
+        "wires": [
+            [
+                "c7f9236266025ac8"
+            ]
+        ]
+    },
+    {
+        "id": "c7f9236266025ac8",
+        "type": "function",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "prepare-payload",
+        "func": "var username = msg.payload.username;\nvar password = msg.payload.password;\n\nmsg.payload = {\n    \"username\": username,\n    \"password\": password,\n    \"realm\": \"admin\"\n};\n\nmsg.headers = {\n    \"Accept\": \"application/json\",\n    \"Content-Type\": \"application/json\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 140,
+        "wires": [
+            [
+                "1014d1c653233f6f"
+            ]
+        ]
+    },
+    {
+        "id": "1014d1c653233f6f",
+        "type": "http request",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "send-request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.100/auth/login",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 140,
+        "wires": [
+            [
+                "f7e1520627c754fb",
+                "b05dcfe6a460caf3"
+            ]
+        ]
+    },
+    {
+        "id": "f7e1520627c754fb",
+        "type": "debug",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "b05dcfe6a460caf3",
+        "type": "function",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "set-flow-token",
+        "func": "let token = msg.payload.token;\nflow.set('token', token);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 220,
+        "wires": [
+            [
+                "7822cce799dbc0f5"
+            ]
+        ]
+    },
+    {
+        "id": "7822cce799dbc0f5",
+        "type": "debug",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "token-ok",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ae8d28454d93d6a8",
+        "type": "comment",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "Make token request",
+        "info": "",
+        "x": 890,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cb8a513535abc26e",
+        "type": "comment",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "Set login data here",
+        "info": "",
+        "x": 190,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "705937a1a4b80501",
+        "type": "comment",
+        "z": "49c12e541a195f0e",
+        "g": "01e69d19865461bb",
+        "name": "Set IP address",
+        "info": "",
+        "x": 600,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "4524d7db0e7e9c53",
+        "type": "grpc-server",
+        "port": "8081",
+        "name": "grpc-temperature",
+        "server": "192.168.0.100",
+        "protoFile": "/**\n * Temperature sensor service.\n *\n * Service that provides device temperature sensor reading\n */\nsyntax = \"proto3\";\n\npackage hal.temperaturesensor;\n\nimport \"google/protobuf/empty.proto\";\n\noption go_package = \"./protos;protos\";\n\n\nmessage TemperatureSensorDevice {\n  string name = 1;\n}\n\n/**\n * Represents the ListDevice response data.\n */\nmessage TemperatureSensorListDeviceResponse {\n  repeated TemperatureSensorDevice devices = 1;\n}\n\nmessage TemperatureSensorReadRequest {\n  string name = 1;\n}\n\nmessage TemperatureSensorReadResponse {\n  float value = 1;\n  string unit = 2;\n}\n\n/**\n * Service exposing TemperatureSensor functions.\n */\nservice TemperatureSensor {\n  /// Used to retrieve all available temperature sensors\n  rpc ListDevices(google.protobuf.Empty) returns (TemperatureSensorListDeviceResponse) {}\n\n  /// Used to read value of a particular temperature sensor.\n  rpc Read(TemperatureSensorReadRequest) returns (TemperatureSensorReadResponse) {}\n}\n",
+        "ca": "",
+        "chain": "",
+        "key": "",
+        "mutualTls": false,
+        "ssl": false,
+        "selfsigned": false,
+        "localServer": false
+    }
+]

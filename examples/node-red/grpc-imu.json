@@ -1,0 +1,887 @@
+[
+    {
+        "id": "f935173d06053fc7",
+        "type": "tab",
+        "label": "grpc-imu",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b32b3f38c8cebb32",
+        "type": "group",
+        "z": "f935173d06053fc7",
+        "name": "Get Auth Token",
+        "style": {
+            "stroke": "#ff7f7f",
+            "label": true
+        },
+        "nodes": [
+            "daf40d9f44eb8075",
+            "3b92225239f051eb",
+            "cb1403e1f69c0ed8",
+            "37cdca69c114d3c4",
+            "ecc0e29dd9870ea8",
+            "3560ba15405e47bd",
+            "7c779c72f80b7530",
+            "4ebcf6a7039c544b",
+            "884fb523fc35b02d"
+        ],
+        "x": 114,
+        "y": 119,
+        "w": 932,
+        "h": 222
+    },
+    {
+        "id": "6a371075c30ffa45",
+        "type": "group",
+        "z": "f935173d06053fc7",
+        "name": "List IMU Sensors",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "79165888eca8f6eb",
+            "858d5825e38d0948",
+            "44447b0207ae2299",
+            "7b689f0502402a31"
+        ],
+        "x": 114,
+        "y": 379,
+        "w": 772,
+        "h": 82
+    },
+    {
+        "id": "58f6a5130663743b",
+        "type": "group",
+        "z": "f935173d06053fc7",
+        "name": "Read Single Sample From Device",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "449d07478c68ef95",
+            "f8a211535a194fd9",
+            "69f50ee1fc3723b1",
+            "d74f901d43f3cb8f",
+            "62b369fab391d845",
+            "d9ef4ff4544b0d01",
+            "609eebfcb28f656f"
+        ],
+        "x": 114,
+        "y": 499,
+        "w": 832,
+        "h": 222
+    },
+    {
+        "id": "7b10196f5d3bc6e5",
+        "type": "group",
+        "z": "f935173d06053fc7",
+        "name": "Stream Data From Sensor",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "5762f30bd12c8a8f",
+            "a22d5dccfd43c086",
+            "e7afd190c767c7fe",
+            "dc4d5a57bdcbbc78",
+            "80e3a13d7b7eb58e",
+            "65ccd2f2c4fe7e58",
+            "750453933d6977e8",
+            "4afb9eb5351af04b",
+            "8c6c080252fefc7c"
+        ],
+        "x": 114,
+        "y": 759,
+        "w": 892,
+        "h": 242
+    },
+    {
+        "id": "96773afbcc13bc44",
+        "type": "group",
+        "z": "f935173d06053fc7",
+        "name": "Set Sensor's Sampling Frequency",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "580a8c88a42beda7",
+            "08b81bdbe1b72c33",
+            "db2bc2bbe8490071",
+            "d415881ab8180e22",
+            "9bdebd9118ad04b1",
+            "5c5dd197c53270fa",
+            "c6aa6e7e9befe72c",
+            "5ffb2c6e4ee9cb8d"
+        ],
+        "x": 114,
+        "y": 1039,
+        "w": 872,
+        "h": 242
+    },
+    {
+        "id": "daf40d9f44eb8075",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "send-login-data",
+        "props": [
+            {
+                "p": "payload.username",
+                "v": "admin",
+                "vt": "str"
+            },
+            {
+                "p": "payload.password",
+                "v": "password",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 240,
+        "y": 220,
+        "wires": [
+            [
+                "3b92225239f051eb"
+            ]
+        ]
+    },
+    {
+        "id": "3b92225239f051eb",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "prepare-payload",
+        "func": "var username = msg.payload.username;\nvar password = msg.payload.password;\n\nmsg.payload = {\n    \"username\": username,\n    \"password\": password,\n    \"realm\": \"admin\"\n};\n\nmsg.headers = {\n    \"Accept\": \"application/json\",\n    \"Content-Type\": \"application/json\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "cb1403e1f69c0ed8"
+            ]
+        ]
+    },
+    {
+        "id": "cb1403e1f69c0ed8",
+        "type": "http request",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "send-request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.100/auth/login",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 630,
+        "y": 220,
+        "wires": [
+            [
+                "37cdca69c114d3c4",
+                "ecc0e29dd9870ea8"
+            ]
+        ]
+    },
+    {
+        "id": "37cdca69c114d3c4",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ecc0e29dd9870ea8",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "set-flow-token",
+        "func": "let token = msg.payload.token;\nflow.set('token', token);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 300,
+        "wires": [
+            [
+                "3560ba15405e47bd"
+            ]
+        ]
+    },
+    {
+        "id": "3560ba15405e47bd",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "token-ok",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "7c779c72f80b7530",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "Make token request",
+        "info": "",
+        "x": 930,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "4ebcf6a7039c544b",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "Set login data here",
+        "info": "",
+        "x": 230,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "884fb523fc35b02d",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "b32b3f38c8cebb32",
+        "name": "Set IP address",
+        "info": "",
+        "x": 640,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "79165888eca8f6eb",
+        "type": "grpc-call",
+        "z": "f935173d06053fc7",
+        "g": "6a371075c30ffa45",
+        "name": "ListDevices",
+        "server": "db2b792d5dba0d18",
+        "service": "Imu",
+        "method": "ListDevices",
+        "chain": "",
+        "key": "",
+        "x": 550,
+        "y": 420,
+        "wires": [
+            [
+                "44447b0207ae2299"
+            ]
+        ]
+    },
+    {
+        "id": "858d5825e38d0948",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "6a371075c30ffa45",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 420,
+        "wires": [
+            [
+                "7b689f0502402a31"
+            ]
+        ]
+    },
+    {
+        "id": "44447b0207ae2299",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "6a371075c30ffa45",
+        "name": "Device List",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "7b689f0502402a31",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "6a371075c30ffa45",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 420,
+        "wires": [
+            [
+                "79165888eca8f6eb"
+            ]
+        ]
+    },
+    {
+        "id": "449d07478c68ef95",
+        "type": "grpc-call",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "ReadSampleRaw",
+        "server": "4524d7db0e7e9c53",
+        "service": "Imu",
+        "method": "ReadSampleRaw",
+        "chain": "",
+        "key": "",
+        "x": 610,
+        "y": 620,
+        "wires": [
+            [
+                "69f50ee1fc3723b1"
+            ]
+        ]
+    },
+    {
+        "id": "f8a211535a194fd9",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "Magnetometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"magnetometer\"}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 560,
+        "wires": [
+            [
+                "d74f901d43f3cb8f"
+            ]
+        ]
+    },
+    {
+        "id": "69f50ee1fc3723b1",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "Device Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "d74f901d43f3cb8f",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 620,
+        "wires": [
+            [
+                "449d07478c68ef95"
+            ]
+        ]
+    },
+    {
+        "id": "62b369fab391d845",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "Gyroscope",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"gyroscope\"}",
+        "payloadType": "json",
+        "x": 220,
+        "y": 620,
+        "wires": [
+            [
+                "d74f901d43f3cb8f"
+            ]
+        ]
+    },
+    {
+        "id": "d9ef4ff4544b0d01",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "Accelerometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"accelerometer\"}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 680,
+        "wires": [
+            [
+                "d74f901d43f3cb8f"
+            ]
+        ]
+    },
+    {
+        "id": "5762f30bd12c8a8f",
+        "type": "grpc-call",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "ReadBufferedDataStream",
+        "server": "4524d7db0e7e9c53",
+        "service": "Imu",
+        "method": "ReadBufferedDataStream",
+        "chain": "",
+        "key": "",
+        "x": 650,
+        "y": 900,
+        "wires": [
+            [
+                "e7afd190c767c7fe"
+            ]
+        ]
+    },
+    {
+        "id": "a22d5dccfd43c086",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Magnetometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"magnetometer\",\"filterLength\":\"10\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 840,
+        "wires": [
+            [
+                "dc4d5a57bdcbbc78"
+            ]
+        ]
+    },
+    {
+        "id": "e7afd190c767c7fe",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Data Stream",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "dc4d5a57bdcbbc78",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 900,
+        "wires": [
+            [
+                "5762f30bd12c8a8f"
+            ]
+        ]
+    },
+    {
+        "id": "80e3a13d7b7eb58e",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Gyroscope",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"gyroscope\",\"filterLength\":\"10\"}",
+        "payloadType": "json",
+        "x": 240,
+        "y": 900,
+        "wires": [
+            [
+                "dc4d5a57bdcbbc78"
+            ]
+        ]
+    },
+    {
+        "id": "65ccd2f2c4fe7e58",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Accelerometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"accelerometer\",\"filterLength\":\"10\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 960,
+        "wires": [
+            [
+                "dc4d5a57bdcbbc78"
+            ]
+        ]
+    },
+    {
+        "id": "580a8c88a42beda7",
+        "type": "grpc-call",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "SetSamplingFrequency",
+        "server": "4524d7db0e7e9c53",
+        "service": "Imu",
+        "method": "SetSamplingFrequency",
+        "chain": "",
+        "key": "",
+        "x": 650,
+        "y": 1180,
+        "wires": [
+            [
+                "db2bc2bbe8490071"
+            ]
+        ]
+    },
+    {
+        "id": "08b81bdbe1b72c33",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Magnetometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"magnetometer\",\"frequency\":\"100\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 1120,
+        "wires": [
+            [
+                "d415881ab8180e22"
+            ]
+        ]
+    },
+    {
+        "id": "db2bc2bbe8490071",
+        "type": "debug",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "d415881ab8180e22",
+        "type": "function",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "authorize",
+        "func": "\nmsg.metadata = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1180,
+        "wires": [
+            [
+                "580a8c88a42beda7"
+            ]
+        ]
+    },
+    {
+        "id": "9bdebd9118ad04b1",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Gyroscope",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"gyroscope\",\"frequency\":\"104\"}",
+        "payloadType": "json",
+        "x": 240,
+        "y": 1180,
+        "wires": [
+            [
+                "d415881ab8180e22"
+            ]
+        ]
+    },
+    {
+        "id": "5c5dd197c53270fa",
+        "type": "inject",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Accelerometer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"deviceName\":\"accelerometer\",\"frequency\":\"104\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 1240,
+        "wires": [
+            [
+                "d415881ab8180e22"
+            ]
+        ]
+    },
+    {
+        "id": "609eebfcb28f656f",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "58f6a5130663743b",
+        "name": "Read",
+        "info": "",
+        "x": 870,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "750453933d6977e8",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Stream",
+        "info": "",
+        "x": 930,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "c6aa6e7e9befe72c",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Write",
+        "info": "",
+        "x": 910,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "4afb9eb5351af04b",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "Change filter length here",
+        "info": "",
+        "x": 250,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "5ffb2c6e4ee9cb8d",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "96773afbcc13bc44",
+        "name": "Change sampling frequency here",
+        "info": "",
+        "x": 270,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "8c6c080252fefc7c",
+        "type": "comment",
+        "z": "f935173d06053fc7",
+        "g": "7b10196f5d3bc6e5",
+        "name": "To stop data stream set sampling frequency for that sensor",
+        "info": "",
+        "x": 610,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "db2b792d5dba0d18",
+        "type": "grpc-server",
+        "port": "8081",
+        "name": "grpc-imu",
+        "server": "192.168.0.100",
+        "protoFile": "/**\n * IMU Sensor Service.\n *\n * Service that enables a control of the Magnetometer and IMU sensors\n */\nsyntax = \"proto3\";\n\npackage hal.imu;\n\nimport \"google/protobuf/empty.proto\";\n\noption go_package = \"./protos;protos\";\n\nmessage Channels {\n  string name = 1;\n  float value = 2;\n}\n\n/**\n * Represents the ReadSampleRaw response data.\n */\nmessage ReadSampleRawResponse {\n  repeated Channels channels = 1;\n}\n\n/**\n * Represents the ReadSampleScaled response data.\n */\nmessage ReadSampleScaledResponse {\n  repeated Channels channels = 1;\n}\n\n/**\n * Represents the ReadBufferedDataStream request data.\n */\nmessage ReadBufferedDataStreamRequest {\n  string deviceName = 1;\n  int32 filterLength = 2;\n}\n\nmessage RawDataStream {\n  int32 X = 1;\n  int32 Y = 2;\n  int32 Z = 3;\n}\n\nmessage ScaledDataStream {\n  float X = 1;\n  float Y = 2;\n  float Z = 3;\n}\n\nmessage MaxDataStream {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n}\n\nmessage MinDataStream {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n}\n\n/**\n * Represents the ReadBufferedDataStream response data.\n */\nmessage ReadBufferedDataStreamResponse {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n  MaxDataStream max = 3;\n  MinDataStream min = 4;\n  string timestamp = 5;\n}\n\n/**\n * Represents the GetCurrentScale response data.\n */\nmessage GetCurrentScaleResponse {\n  float scale = 1;\n}\n\n/**\n * Represents the GetAvailableScales response data.\n */\nmessage GetAvailableScalesResponse {\n  repeated float scales = 1;\n}\n\n/**\n * Represents the SetScale request data.\n */\nmessage SetScaleRequest {\n  string deviceName = 1;\n  float scale = 2;\n}\n\n/**\n * Represents the GetCurrentSamplingFrequency response data.\n */\nmessage GetCurrentSamplingFrequencyResponse {\n  float frequency = 1;\n}\n\n/**\n * Represents the GetAvailableSamplingFrequency response data.\n */\nmessage GetAvailableSamplingFrequencyResponse {\n  repeated float frequencies = 1;\n}\n\n/**\n * Represents the SetSamplingFrequency request data.\n */\nmessage SetSamplingFrequencyRequest {\n  string deviceName = 1;\n  float frequency = 2;\n}\n\nmessage ChooseDeviceRequest {\n  string deviceName = 1;\n}\n\nmessage ImuDeviceResponse {\n  string name = 1;\n}\n\n/**\n * Represents the ListDevice response data.\n */\nmessage ImuListDevicesResponse {\n  repeated ImuDeviceResponse devices = 1;\n}\n\n/**\n * Service exposing IMU sensor functions.\n */\nservice Imu {\n  /// Used to retrive raw samples from sensors\n  rpc ReadSampleRaw(ChooseDeviceRequest) returns (ReadSampleRawResponse) {}\n\n  /// Used to retrive scaled samples from sensors\n  rpc ReadSampleScaled(ChooseDeviceRequest) returns (ReadSampleScaledResponse) {}\n\n  /// Used to stream scaled and raw samples from sensors\n  rpc ReadBufferedDataStream(ReadBufferedDataStreamRequest) returns (stream ReadBufferedDataStreamResponse) {}\n\n  /// Used to retrieve current scales\n  rpc GetCurrentScale(ChooseDeviceRequest) returns (GetCurrentScaleResponse) {}\n\n  /// Used to retrieve available scales\n  rpc GetAvailableScales(ChooseDeviceRequest) returns (GetAvailableScalesResponse) {}\n\n  /// Used to write scale value\n  rpc SetScale(SetScaleRequest) returns (google.protobuf.Empty) {}\n\n  /// Used to retrieve current sampling frequency\n  rpc GetCurrentSamplingFrequency(ChooseDeviceRequest) returns (GetCurrentSamplingFrequencyResponse) {}\n\n  /// Used to retrieve available sampling frequency\n  rpc GetAvailableSamplingFrequency(ChooseDeviceRequest) returns (GetAvailableSamplingFrequencyResponse) {}\n\n  /// Used to write sampling frequency value\n  rpc SetSamplingFrequency(SetSamplingFrequencyRequest) returns (google.protobuf.Empty) {}\n\n  // Used to get all available devices\n  rpc ListDevices(google.protobuf.Empty) returns (ImuListDevicesResponse) {}\n}\n",
+        "ca": "",
+        "chain": "",
+        "key": "",
+        "mutualTls": false,
+        "ssl": false,
+        "selfsigned": false,
+        "localServer": false
+    },
+    {
+        "id": "4524d7db0e7e9c53",
+        "type": "grpc-server",
+        "port": "8081",
+        "name": "grpc-temperature",
+        "server": "192.168.0.100",
+        "protoFile": "/**\n * IMU Sensor Service.\n *\n * Service that enables a control of the Magnetometer and IMU sensors\n */\nsyntax = \"proto3\";\n\npackage hal.imu;\n\nimport \"google/protobuf/empty.proto\";\n\noption go_package = \"./protos;protos\";\n\nmessage Channels {\n  string name = 1;\n  float value = 2;\n}\n\n/**\n * Represents the ReadSampleRaw response data.\n */\nmessage ReadSampleRawResponse {\n  repeated Channels channels = 1;\n}\n\n/**\n * Represents the ReadSampleScaled response data.\n */\nmessage ReadSampleScaledResponse {\n  repeated Channels channels = 1;\n}\n\n/**\n * Represents the ReadBufferedDataStream request data.\n */\nmessage ReadBufferedDataStreamRequest {\n  string deviceName = 1;\n  int32 filterLength = 2;\n}\n\nmessage RawDataStream {\n  int32 X = 1;\n  int32 Y = 2;\n  int32 Z = 3;\n}\n\nmessage ScaledDataStream {\n  float X = 1;\n  float Y = 2;\n  float Z = 3;\n}\n\nmessage MaxDataStream {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n}\n\nmessage MinDataStream {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n}\n\n/**\n * Represents the ReadBufferedDataStream response data.\n */\nmessage ReadBufferedDataStreamResponse {\n  RawDataStream raw = 1;\n  ScaledDataStream scaled = 2;\n  MaxDataStream max = 3;\n  MinDataStream min = 4;\n  string timestamp = 5;\n}\n\n/**\n * Represents the GetCurrentScale response data.\n */\nmessage GetCurrentScaleResponse {\n  float scale = 1;\n}\n\n/**\n * Represents the GetAvailableScales response data.\n */\nmessage GetAvailableScalesResponse {\n  repeated float scales = 1;\n}\n\n/**\n * Represents the SetScale request data.\n */\nmessage SetScaleRequest {\n  string deviceName = 1;\n  float scale = 2;\n}\n\n/**\n * Represents the GetCurrentSamplingFrequency response data.\n */\nmessage GetCurrentSamplingFrequencyResponse {\n  float frequency = 1;\n}\n\n/**\n * Represents the GetAvailableSamplingFrequency response data.\n */\nmessage GetAvailableSamplingFrequencyResponse {\n  repeated float frequencies = 1;\n}\n\n/**\n * Represents the SetSamplingFrequency request data.\n */\nmessage SetSamplingFrequencyRequest {\n  string deviceName = 1;\n  float frequency = 2;\n}\n\nmessage ChooseDeviceRequest {\n  string deviceName = 1;\n}\n\nmessage ImuDeviceResponse {\n  string name = 1;\n}\n\n/**\n * Represents the ListDevice response data.\n */\nmessage ImuListDevicesResponse {\n  repeated ImuDeviceResponse devices = 1;\n}\n\n/**\n * Service exposing IMU sensor functions.\n */\nservice Imu {\n  /// Used to retrive raw samples from sensors\n  rpc ReadSampleRaw(ChooseDeviceRequest) returns (ReadSampleRawResponse) {}\n\n  /// Used to retrive scaled samples from sensors\n  rpc ReadSampleScaled(ChooseDeviceRequest) returns (ReadSampleScaledResponse) {}\n\n  /// Used to stream scaled and raw samples from sensors\n  rpc ReadBufferedDataStream(ReadBufferedDataStreamRequest) returns (stream ReadBufferedDataStreamResponse) {}\n\n  /// Used to retrieve current scales\n  rpc GetCurrentScale(ChooseDeviceRequest) returns (GetCurrentScaleResponse) {}\n\n  /// Used to retrieve available scales\n  rpc GetAvailableScales(ChooseDeviceRequest) returns (GetAvailableScalesResponse) {}\n\n  /// Used to write scale value\n  rpc SetScale(SetScaleRequest) returns (google.protobuf.Empty) {}\n\n  /// Used to retrieve current sampling frequency\n  rpc GetCurrentSamplingFrequency(ChooseDeviceRequest) returns (GetCurrentSamplingFrequencyResponse) {}\n\n  /// Used to retrieve available sampling frequency\n  rpc GetAvailableSamplingFrequency(ChooseDeviceRequest) returns (GetAvailableSamplingFrequencyResponse) {}\n\n  /// Used to write sampling frequency value\n  rpc SetSamplingFrequency(SetSamplingFrequencyRequest) returns (google.protobuf.Empty) {}\n\n  // Used to get all available devices\n  rpc ListDevices(google.protobuf.Empty) returns (ImuListDevicesResponse) {}\n}\n",
+        "ca": "",
+        "chain": "",
+        "key": "",
+        "mutualTls": false,
+        "ssl": false,
+        "selfsigned": false,
+        "localServer": false
+    }
+]
