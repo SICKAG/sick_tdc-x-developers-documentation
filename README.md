@@ -1,6 +1,6 @@
 # TDC-X Developers Documentation
 
-This documentation serves as an insight into the TDC-X device's capabilities and programmability, providing extensive descriptions of the services available on the device. It aims to help users explore the TDC-X and what it has to offer. The developer's documnetation has wiki page:
+This documentation serves as an insight into the TDC-X device's capabilities and programmability, providing extensive descriptions of the services available on the device. It aims to help users explore the TDC-X and what it has to offer. The developer's documentation has a wiki page:
 
 - [ SICK TDC-X Developer's Documentation](https://github.com/SICKAG/sick_tdc-x-developers-documentation/wiki)
 
