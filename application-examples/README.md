@@ -240,7 +240,7 @@ This section will explain how to setup and configure node-red.
 
 ![node-red import](/application-examples/img/node-red_import.png)
 
-* Paste the JSON configuration available [here](src/nodered_flow.json) and click import.
+* Paste the JSON configuration available [here](/application-examples/src/nodered_flow.json) and click import.
 
 ![import nodes](/application-examples/img/import_nodes.png)
 
@@ -352,7 +352,7 @@ This section shows parsed data that flows to InfluxDB.
 
 InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on **create dashboard** button, choose new dashboard, then click on **add cell**.
 
-Instead of creating new one, you can import the dashboard created for this example, download it from [here](/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
+Instead of creating new one, you can import the dashboard created for this example, download it from [here](/application-examples/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
 
 
 ![cell editing](/application-examples/img/cell-setup.png)
@@ -382,4 +382,4 @@ Created data source gives you many possibilities to create various dashboards an
 
 Dashboard created for this demonstration purposes, shows MPB sensor data and TDC-X monitoring data.
 
-Grafana dashboard import files are available [here](src/grafana_dashboard.json). If you want to use them go to **Dashboards → New → import**, then simply paste the JSON code or load the JSON file.
+Grafana dashboard import files are available [here](/application-examples/src/grafana_dashboard.json). If you want to use them go to **Dashboards → New → import**, then simply paste the JSON code or load the JSON file.
