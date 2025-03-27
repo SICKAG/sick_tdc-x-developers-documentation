@@ -1,6 +1,6 @@
 # Flow-based monitoring 
 
-This project demonstrates how to set up real-time sensor data monitoring using MPB10 Multi Physics Box sensor connected to a TDC-X device. Example shows a flow-based architecture using Node-RED for data processing, MQTT for messaging, InfluxDB for time-series storage, and Grafana for visualization.
+This project example demonstrates how to set up real-time sensor data monitoring using MPB10 Multi Physics Box sensor connected to a TDC-X device. Example shows a flow-based architecture using Node-RED for data processing, MQTT for messaging, InfluxDB for time-series storage, and Grafana for visualization.
 
 ## Contents
 
@@ -16,7 +16,7 @@ This project demonstrates how to set up real-time sensor data monitoring using M
 5. [Quick Start](#quick-start)
 6. [Setup Instructions](#setup-instructions)
    - [Application Installation](#application-installation)
-   - [MPB10 Sensor Setup](#mpb10-sensor-setup)JetBrains Mono
+   - [MPB10 Sensor Setup](#mpb10-sensor-setup)
    - [MQTT Configuration](#mqtt-setup)
 7. [Application Setup](#application-setup)
    - [Application Overview](#application-overview)
@@ -56,7 +56,7 @@ graph LR
 
 Hardware:
 - MPB10 Multi Physics Box sensor
-- TDC-X device, firmware version: 1.2 or higher
+- TDC-X device, firmware version: 1.2.0 or higher
 - Network connection
 
 Software:
