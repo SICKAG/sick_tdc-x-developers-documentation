@@ -1,6 +1,6 @@
 # Flow-based monitoring 
 
-This project demonstrates how to set up real-time sensor data monitoring using MPB10 Multi Physics Box sensor connected to a TDC-X device. Example shows a flow-based architecture using Node-RED for data processing, MQTT for messaging, InfluxDB for time-series storage, and Grafana for visualization.
+This project example demonstrates how to set up real-time sensor data monitoring using MPB10 Multi Physics Box sensor connected to a TDC-X device. Example shows a flow-based architecture using Node-RED for data processing, MQTT for messaging, InfluxDB for time-series storage, and Grafana for visualization.
 
 ## Contents
 
@@ -16,7 +16,7 @@ This project demonstrates how to set up real-time sensor data monitoring using M
 5. [Quick Start](#quick-start)
 6. [Setup Instructions](#setup-instructions)
    - [Application Installation](#application-installation)
-   - [MPB10 Sensor Setup](#mpb10-sensor-setup)JetBrains Mono
+   - [MPB10 Sensor Setup](#mpb10-sensor-setup)
    - [MQTT Configuration](#mqtt-setup)
 7. [Application Setup](#application-setup)
    - [Application Overview](#application-overview)
@@ -56,7 +56,7 @@ graph LR
 
 Hardware:
 - MPB10 Multi Physics Box sensor
-- TDC-X device, firmware version: 1.2 or higher
+- TDC-X device, firmware version: 1.2.0 or higher
 - Network connection
 
 Software:
@@ -109,14 +109,14 @@ IODD XML file is describing how IO-Link devices communicate information to highe
 
 Go to IO-Link tab and open IODD File Management, you can find it [here](http://192.168.0.100/#/io-link/iodd-file-management). Simply click upload and choose the file you need.
 
-![iodd_file_management](/application-examples/img/iodd_file_upload.png)
+![iodd_file_management](/application-examples/Flow-Based_Monitoring/img/iodd_file_upload.png)
 This is how your screen should look like after uploading the file correctly.
 
-_**NOTE:** To download the file, make sure you read [this](#iodd-file-upload-on-tdc-x) section._
+_**NOTE:** To download the file, make sure you read [this](#iodd-file) section._
 
 Now if you head back to IO-Link tab ([link](http://192.168.0.100/#/io-link/devices/1)) and click IODD view, much more detailed and profiled data will be shown.
 
-![iodd view](/application-examples/img/iodd_view.png)
+![iodd view](/application-examples/Flow-Based_Monitoring/img/iodd_view.png)
 This is how screen should look like after clicking IODD view.
 
 ### MQTT setup
@@ -140,7 +140,7 @@ _**NOTE:**  Default configuration of internal broker requires no **Username** an
 
 
 
-![MQTT configuration](/application-examples/img/mqtt_configuration.png)
+![MQTT configuration](/application-examples/Flow-Based_Monitoring/img/mqtt_configuration.png)
 
 #### Last will settings:
 * **Topic:** lastWillTopic
@@ -148,12 +148,12 @@ _**NOTE:**  Default configuration of internal broker requires no **Username** an
 * **QoS:** Only Once
 * **Retain:** false
 
-![last will settings](/application-examples/img/last_will_settings.png)
+![last will settings](/application-examples/Flow-Based_Monitoring/img/last_will_settings.png)
 
 #### MQTT status:
-If everything is set up correctly under MQTT status connection should be accepted.
+If everything is set up correctly under MQTT status connection, once settings are applies, status connection should be accepted.
 
-![MQTT status](/application-examples/img/mqtt_status.png)
+![MQTT status](/application-examples/Flow-Based_Monitoring/img/mqtt_status.png)
 
 ### Send IO-Link data to broker:
 To send data from IO-Link device to broker we have to configure MQTT topics section in IO-Link tab ([link](http://192.168.0.100/#/io-link/MQTT-settings)). 
@@ -170,7 +170,7 @@ Press **Add topic** button and fill required fields
 * **Topic name:** master1port1/processData
 
 If everything is set up correctly under MQTT topics you should see this.
-![MQTT topics](/application-examples/img/mqtt_topics.png)
+![MQTT topics](/application-examples/Flow-Based_Monitoring/img/mqtt_topics.png)
 
 
 This section covers the setup and configuration of all required applications for the monitoring system. Make sure you have the following applications installed and running:
@@ -213,7 +213,7 @@ Make sure to install it using **Applications** tab, after that you can access it
 
 #### Configuration
 
-![influx initial user](/application-examples/img/influx_initial_user.png)
+![influx initial user](/application-examples/Flow-Based_Monitoring/img/influx_initial_user.png)
 Picture shows how the Initial User is configured for this example.
 
 
@@ -234,15 +234,15 @@ This section will explain how to setup and configure node-red.
 
 * Find and click on burger bar (top right corner). 
 
-![node-red burger](/application-examples/img/node-red_burger.png)
+![node-red burger](/application-examples/Flow-Based_Monitoring/img/node-red_burger.png)
 
 * Click import.
 
-![node-red import](/application-examples/img/node-red_import.png)
+![node-red import](/application-examples/Flow-Based_Monitoring/img/node-red_import.png)
 
 * Paste the JSON configuration available [here](/application-examples/src/nodered_flow.json) and click import.
 
-![import nodes](/application-examples/img/import_nodes.png)
+![import nodes](/application-examples/Flow-Based_Monitoring/img/import_nodes.png)
 
 ##### Credentials
 
@@ -250,11 +250,11 @@ Make sure to insert credentials to authenticate for TDC-X API calls.
 
 * Double-click on ***credentials***
 
-![credentials node](/application-examples/img/node-red_credentials_node.png)
+![credentials node](/application-examples/Flow-Based_Monitoring/img/node-red_credentials_node.png)
 
 * Change ***tdcx-username*** and ***tdcx-password*** to credentials used for your TDC-X device.
 
-![change tdcx credentials](/application-examples/img/node-red_credentials.png)
+![change tdcx credentials](/application-examples/Flow-Based_Monitoring/img/node-red_credentials.png)
 
 
 ##### HTTP requests
@@ -265,30 +265,30 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 
 * Open ***tdc-x stats endpoint*** node.
 
-![node-red stats endpoint ](/application-examples/img/node-red_stats_node.png)
+![node-red stats endpoint ](/application-examples/Flow-Based_Monitoring/img/node-red_stats_node.png)
 
 * Change IP address that suits device.
 
-![tdc-x stats endpoint](/application-examples/img/tdc-x_stats_link.png)
+![tdc-x stats endpoint](/application-examples/Flow-Based_Monitoring/img/tdc-x_stats_link.png)
 * Open ***tdc-x auth endpoint*** node.
 
-![node-red auth endpoint ](/application-examples/img/node-red_auth_node.png)
+![node-red auth endpoint ](/application-examples/Flow-Based_Monitoring/img/node-red_auth_node.png)
 
 * Again change IP address that suits device.
 
-![tdc-x auth endpoint](/application-examples/img/tdc-x_auth_link.png)
+![tdc-x auth endpoint](/application-examples/Flow-Based_Monitoring/img/tdc-x_auth_link.png)
 
 * Open ***influxdb-write*** node.
 
-![node-red influx endpoint](/application-examples/img/node-red_influxdb_write_node.png)
+![node-red influx endpoint](/application-examples/Flow-Based_Monitoring/img/node-red_influxdb_write_node.png)
 
 * Change IP address based on your InfluxDB configuration, InfluxDB API is explained [here](#influxdb-endpoint)
 
-![influxdb write endpoint](/application-examples/img/node-red_influxdb_write.png)
+![influxdb write endpoint](/application-examples/Flow-Based_Monitoring/img/node-red_influxdb_write.png)
 
 * Check ***Use authentication***, type is ***bearer*** and under ***token*** field insert your InfluxDB token.
 
-![influxdb write auth](/application-examples/img/node-red_influxdb_auth.png)
+![influxdb write auth](/application-examples/Flow-Based_Monitoring/img/node-red_influxdb_auth.png)
 
 ###### InfluxDB endpoint
 
@@ -352,14 +352,14 @@ This section shows parsed data that flows to InfluxDB.
 
 InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on **create dashboard** button, choose new dashboard, then click on **add cell**.
 
-Instead of creating new one, you can import the dashboard created for this example, download it from [here](/application-examples/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
+Instead of creating new one, you can import the dashboard created for this example, download it from [here](/application-examples/Flow-Based_Monitoring/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
 
 
-![cell editing](/application-examples/img/cell-setup.png)
+![cell editing](/application-examples/Flow-Based_Monitoring/img/cell-setup.png)
 
 In the left corner under queries choose the source (bucket) and then you can filter the data based on the JSON file inserted into it. Multiple filters can be applied, since speedometer will be demonstrated then three separated gauges will be created for each value. Dashboard should look like picture down below if steps were followed correctly.
 
-![dashboard setup](/application-examples/img/dashboard-setup.png)
+![dashboard setup](/application-examples/Flow-Based_Monitoring/img/dashboard-setup.png)
 
 **NOTE:** Refreshing interval can be changed to 1s by clicking on refresh button and hardcore type the 1s value.
 
@@ -374,12 +374,12 @@ To access data from influxd, **data source** has to be created. Go to **connecti
 
 Look at the picture down below for guidance how to setup datasource, make sure to check your TDC-X IP address.
 
-![influxdb data source in grafana](img/grafana_influxdb_source.png)
+![influxdb data source in grafana](/application-examples/Flow-Based_Monitoring/img/grafana_influxdb_source.png)
 
 Created data source gives you many possibilities to create various dashboards and graphs in Grafana.  
 
-![dashboard in grafana](/application-examples/img/grafana_dashboard.png)
+![dashboard in grafana](/application-examples/Flow-Based_Monitoring/img/grafana_dashboard.png)
 
 Dashboard created for this demonstration purposes, shows MPB sensor data and TDC-X monitoring data.
 
-Grafana dashboard import files are available [here](/application-examples/src/grafana_dashboard.json). If you want to use them go to **Dashboards → New → import**, then simply paste the JSON code or load the JSON file.
+Grafana dashboard import files are available [here](/application-examples/Flow-Based_Monitoring/src/grafana_dashboard.json). If you want to use them go to **Dashboards → New → import**, then simply paste the JSON code or load the JSON file.
