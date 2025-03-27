@@ -16,7 +16,7 @@ This project demonstrates how to set up real-time sensor data monitoring using M
 5. [Quick Start](#quick-start)
 6. [Setup Instructions](#setup-instructions)
    - [Application Installation](#application-installation)
-   - [MPB10 Sensor Setup](#mpb10-sensor-setup)
+   - [MPB10 Sensor Setup](#mpb10-sensor-setup)JetBrains Mono
    - [MQTT Configuration](#mqtt-setup)
 7. [Application Setup](#application-setup)
    - [Application Overview](#application-overview)
@@ -175,7 +175,7 @@ If everything is set up correctly under MQTT topics you should see this.
 
 This section covers the setup and configuration of all required applications for the monitoring system. Make sure you have the following applications installed and running:
 
-#### Application Overview
+### Application Overview
 1. **Node-RED** (port 1880)
    - Data flow orchestration and processing
    - MQTT subscriber and publisher
@@ -305,11 +305,11 @@ Endpoint URL should be:
 http://{DEVICE_IP}:8086/api/v2/write?org=<influxdb organisation name>&bucket={<influxdb bucket name>}&precision=ms 
 ```
 
-##### Start Application
+#### Start Application
 
 To start node-red flow press red ***Deploy*** button on top right side of the screen.
 
-###### JSON structure. 
+#### JSON structure. 
 This section shows parsed data that flows to InfluxDB.
 
 **TDC-X monitor data:**
@@ -348,7 +348,7 @@ This section shows parsed data that flows to InfluxDB.
  
 
 
-#### InfluxDB Dashboard configuration 
+### InfluxDB Dashboard configuration 
 
 InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on **create dashboard** button, choose new dashboard, then click on **add cell**.
 
