@@ -1,6 +1,25 @@
-# Flow-based monitoring 
+# Flow-based Monitoring with TDC-X
 
-This project example demonstrates how to set up real-time sensor data monitoring using MPB10 Multi Physics Box sensor connected to a TDC-X device. Example shows a flow-based architecture using Node-RED for data processing, MQTT for messaging, InfluxDB for time-series storage, and Grafana for visualization.
+Real-time sensor data monitoring system using MPB10 Multi Physics Box sensor and TDC-X device. Features flow-based architecture with Node-RED, MQTT, InfluxDB and Grafana.
+
+## Overview
+
+This application creates a complete monitoring pipeline for industrial sensor data:
+- Real-time data collection from MPB10 sensor (vibration, shock, temperature)
+- IO-Link communication via TDC-X device
+- MQTT messaging for data transmission
+- Data processing with Node-RED
+- Time-series storage in InfluxDB 
+- Real-time visualization in Grafana
+
+## System Architecture
+```mermaid
+graph LR
+    MPB[MPB10 Sensor] --> |IO-Link| TDC[TDC-X]
+    TDC -->|MQTT| NR[Node-RED]
+    NR -->|Write API| IDB[InfluxDB]
+    IDB -->|Query API| G[Grafana]
+```
 
 ## Contents
 
@@ -31,28 +50,8 @@ This project example demonstrates how to set up real-time sensor data monitoring
    - [Grafana Dashboard](#grafana)
 10. [Troubleshooting](#troubleshooting)
 
-## Description
 
-This application creates a complete monitoring pipeline for industrial sensor data. The MPB10 sensor collects vibration, shock and temperature measurements which are transmitted through IO-Link to a TDC-X device. The data is then published via MQTT protocol and processed by Node-RED flows. The processed measurements are stored in InfluxDB time-series database and visualized in real-time using customizable Grafana dashboards.
-
-Key features:
-- Real-time sensor data collection from MPB10 Multi Physics Box
-- IO-Link communication via TDC-X device
-- MQTT messaging for data transmission
-- Data processing and transformation using Node-RED
-- Time-series storage in InfluxDB
-- Real-time visualization with Grafana and InfluxDB dashboards
-
-## System Architecture
-```mermaid
-graph LR
-    MPB[MPB10 Sensor] -->|IO-Link| TDC[TDC-X]
-    TDC -->|MQTT| NR[Node-RED]
-    NR -->|Write API| IDB[InfluxDB]
-    IDB -->|Query API| G[Grafana]
-```
-
-## Prerequisites
+## System Requirements
 
 Hardware:
 - MPB10 Multi Physics Box sensor
