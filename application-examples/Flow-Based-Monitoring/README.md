@@ -23,9 +23,9 @@ graph LR
 
 ## Contents
 
-1. [Description](#description)
+1. [Description](#overview)
 2. [System Architecture](#system-architecture)
-3. [Prerequisites](#prerequisites)
+3. [System Requirements](#system-requirements)
    - [Hardware Requirements](#hardware)
    - [Software Requirements](#software)
 4. [TDC-X Information](#tdx-x-information)
