@@ -1,0 +1,410 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow based monitoring",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a902a3e683090f85",
+        "type": "group",
+        "z": "f6f2187d.f17ca8",
+        "name": "MPB",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "42f1167b4b4b9723",
+            "1c910f111d9fdeae",
+            "af55153d12f08f2e",
+            "4f08bc737474146c",
+            "0b275be997197c19",
+            "bae1be0ba151ab92"
+        ],
+        "x": 34,
+        "y": 499,
+        "w": 1032,
+        "h": 182
+    },
+    {
+        "id": "63c65afc13a5a7cb",
+        "type": "group",
+        "z": "f6f2187d.f17ca8",
+        "name": "TDC-X",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "b6cb1580d08bf110",
+            "aced907cb1577a10",
+            "ec6d6d65afb5b023",
+            "b877e81b25aa417e",
+            "33129874463cd67c",
+            "eeb5579fc090f369",
+            "9506c7826c84611d",
+            "27622e61de96724e",
+            "25ca3d12cb6534e5"
+        ],
+        "x": 34,
+        "y": 239,
+        "w": 1312,
+        "h": 182
+    },
+    {
+        "id": "808db46dc460d5f4",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.0.100",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "42f1167b4b4b9723",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "1c910f111d9fdeae",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "",
+        "topic": "master1port1/processData",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "808db46dc460d5f4",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 540,
+        "wires": [
+            [
+                "4f08bc737474146c"
+            ]
+        ]
+    },
+    {
+        "id": "af55153d12f08f2e",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "parse data for lineProtocol",
+        "func": "var data = JSON.parse(msg.payload);\n\n// extract values from the payload\nvar valueX = Math.round(data.iolink.value.Value_0__default__v_RMS__X_.value);\nvar valueY = Math.round(data.iolink.value.Value_1__default__v_RMS__Y_.value);\nvar valueZ = Math.round(data.iolink.value.Value_2__default__v_RMS__Z_.value);\n\n// host and region\nvar host = \"server01\"; \nvar region = \"eu\"; \n\n// line protocol for InfluxDB\nvar lineProtocol = `mpb,host=${host},region=${region} value_x=${valueX},value_y=${valueY},value_z=${valueZ}`;\n\nmsg.payload = lineProtocol;\nreturn msg; ",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 600,
+        "wires": [
+            [
+                "42f1167b4b4b9723",
+                "0b275be997197c19"
+            ]
+        ]
+    },
+    {
+        "id": "4f08bc737474146c",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 350,
+        "y": 540,
+        "wires": [
+            [
+                "af55153d12f08f2e"
+            ]
+        ]
+    },
+    {
+        "id": "0b275be997197c19",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "influxdb-write",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.100:8086/api/v2/write?org=SICK&bucket=data&precision=ms",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 770,
+        "y": 560,
+        "wires": [
+            [
+                "bae1be0ba151ab92"
+            ]
+        ]
+    },
+    {
+        "id": "bae1be0ba151ab92",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "g": "a902a3e683090f85",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "statusCode",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "b6cb1580d08bf110",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "tdc-x stats endpoint",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.100/api/v1/system/monitor/stats",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 510,
+        "y": 280,
+        "wires": [
+            [
+                "ec6d6d65afb5b023"
+            ]
+        ]
+    },
+    {
+        "id": "aced907cb1577a10",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "auth header",
+        "func": "msg.headers = {\n    \"Authorization\":\"Bearer \" + flow.get(\"token\")\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 280,
+        "wires": [
+            [
+                "b6cb1580d08bf110"
+            ]
+        ]
+    },
+    {
+        "id": "ec6d6d65afb5b023",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "send mpb data",
+        "func": "if (msg.statusCode == 401) {\n    return [msg, null];\n} else {\n    var data = JSON.parse(msg.payload);\n\n    // values from the JSON data\n    var cpuLoad = Math.round(data.cpu.totalUsage); \n    var memoryUsedMB = Math.round(data.memory.used / 1048); \n    var temperature1 = Math.round(data.temperature[0].value);\n    var temperature2 = Math.round(data.temperature[1].value); \n\n    // the host and region\n    var host = \"server01\";\n    var region = \"eu\";\n\n    // line protocol for InfluxDB\n    var lineProtocol = `tdc-x,host=${host},region=${region} cpu_load=${cpuLoad},memory_used=${memoryUsedMB},SOCtemp=${temperature1},PCBtemp=${temperature2}`;\n\n    msg.payload = lineProtocol;\n}\n\nreturn [null, msg];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 380,
+        "wires": [
+            [
+                "b877e81b25aa417e"
+            ],
+            [
+                "27622e61de96724e",
+                "0b275be997197c19"
+            ]
+        ]
+    },
+    {
+        "id": "b877e81b25aa417e",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "credentials",
+        "func": "msg.payload = {\n    \"username\": \"tdcx-username\",\n    \"password\": \"tdcx-password\",\n    \"realm\": \"admin\"\n};\n\nmsg.headers = {\n    \"Accept\": \"application/json\",\n    \"Content-Type\": \"application/json\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 280,
+        "wires": [
+            [
+                "33129874463cd67c"
+            ]
+        ]
+    },
+    {
+        "id": "33129874463cd67c",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "tdc-x auth endpoint",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.100/auth/login",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 970,
+        "y": 280,
+        "wires": [
+            [
+                "eeb5579fc090f369"
+            ]
+        ]
+    },
+    {
+        "id": "eeb5579fc090f369",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "set-flow-token",
+        "func": "let token = msg.payload.token;\nflow.set('token', token);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 280,
+        "wires": [
+            [
+                "9506c7826c84611d"
+            ]
+        ]
+    },
+    {
+        "id": "9506c7826c84611d",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "token-ok",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1240,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "27622e61de96724e",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "25ca3d12cb6534e5",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "g": "63c65afc13a5a7cb",
+        "name": "loop",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "10",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 280,
+        "wires": [
+            [
+                "aced907cb1577a10"
+            ]
+        ]
+    }
+]
