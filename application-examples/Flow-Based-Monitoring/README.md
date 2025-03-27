@@ -23,42 +23,45 @@ graph LR
 
 ## Contents
 
-1. [Description](#overview)
+1. [Overview](#overview)
 2. [System Architecture](#system-architecture)
 3. [System Requirements](#system-requirements)
    - [Hardware Requirements](#hardware)
    - [Software Requirements](#software)
-4. [TDC-X Information](#tdx-x-information)
-   - [Network Configuration](#network-configuration)
-   - [Access Methods](#access-methods)
-   - [Required Ports](#required-ports)
+4. [TDC-X Network Configuration](#tdc-x-network-configuration)
 5. [Quick Start](#quick-start)
-6. [Setup Instructions](#setup-instructions)
-   - [Application Installation](#application-installation)
-   - [MPB10 Sensor Setup](#mpb10-sensor-setup)
-   - [MQTT Configuration](#mqtt-setup)
-7. [Application Setup](#application-setup)
+6. [MPB10 Sensor Setup](#mpb10-sensor-setup)
+   - [Information](#information)
+   - [Key Features](#key-features)
+   - [Connect MPB10 to TDC-X](#connect-mpb10-to-tdc-x)
+   - [IODD File](#iodd-file)
+   - [IODD File Upload on TDC-X](#iodd-file-upload-on-tdc-x)
+7. [MQTT Setup](#mqtt-setup)
+   - [MQTT Configuration Fields](#mqtt-configuration-fields)
+   - [Last Will Settings](#last-will-settings)
+   - [MQTT Status](#mqtt-status)
+   - [Send IO-Link Data To Broker](#send-io-link-data-to-broker)
+   - [MQTT Topics](#mqtt-topics)
+8. [Application Setup](#application-setup)
    - [Application Overview](#application-overview)
+   - [Application Installation](#application-installation)
    - [Installation Verification](#installation-verification)
-   - [InfluxDB Configuration](#influxdb)
-   - [Node-RED Configuration](#node-red)
-   - [Grafana Configuration](#grafana)
-8. [Data Formats](#data-formats)
-   - [JSON Structures](#json-structure)
-9. [Dashboard Configuration](#dashboard-configuration)
-   - [InfluxDB Dashboard](#influxdb-dashboard-configuration)
-   - [Grafana Dashboard](#grafana)
-10. [Troubleshooting](#troubleshooting)
+9. [InfluxDB Configuration](#influxdb)
+10. [Node-RED Configuration](#node-red)
+11. [InfluxDB Dashboard Configuration](#influxdb-dashboard-configuration)
+12. [Grafana Setup](#grafana)
+12. [Troubleshooting](#troubleshooting)
+
 
 
 ## System Requirements
 
-Hardware:
+### Hardware:
 - MPB10 Multi Physics Box sensor
 - TDC-X device, firmware version: 1.2.0 or higher
 - Network connection
 
-Software:
+### Software:
 - Node-RED (port 1880)
 - InfluxDB (port 8086) 
 - Grafana (port 3000)
@@ -73,11 +76,10 @@ Common issues and solutions:
 - **No Data in Grafana**: Verify InfluxDB data source configuration and query syntax
 - **Missing Sensor Data**: Check IO-Link connection and MQTT topic configuration
 
-### TDC-X Network Configuration
-- IP Address: **192.168.0.100**
-- Web Interface Port: 80
-- Default Gateway: 192.168.0.1
-- Subnet Mask: 255.255.255.0
+## TDC-X Network Configuration
+- IP Address: ```192.168.0.100```
+- Web Interface Port: ```80```
+- Subnet Mask: ```255.255.255.0```
 
 ## Quick Start
 1. Install required applications on TDC-X (Node-RED, InfluxDB, Grafana, Mosquitto)
@@ -87,92 +89,10 @@ Common issues and solutions:
 5. Configure InfluxDB storage
 6. Import Grafana dashboards
 
-### Application installation
-In this example, following applications will be used: **NodeRed**, **Grafana**, **InfluxDB** and **Mosquitto**. To install the apps, simply aim to applications tab to find list of applications. Next to application needed, **install** button can be found.
 
-_**NOTE:** To install the listed applications, make sure the TDC-X device is connected to a network._
+## Applications
 
-For detailed guide how to install apps please visit: [Installing, Accessing and Removing Applications](https://github.com/SICKAG/sick_tdc-x-developers-documentation/wiki/Getting-Started#installing-accessing-and-removing-applications)
-
-
-### MPB10  sensor setup
-The Multi Physics Box MPB10 is a condition monitoring sensor. It is used to detect ambient and/or status conditions of a machine or system, such as vibration, shock and temperature. More information about the sensor you can find [here](https://www.sick.com/be/en/catalog/products/detection-sensors/condition-monitoring-sensors/multi-physics-box/mpb10-vs00vsiq00/p/p670770).
-
-#### Connect MPB10 to TDC-X
-Make sure that sensor is plugged to your TDC-X device which has multiple interfaces for IO-Link devices, we are assuming that you connected it to port 1. Now if you click [this](http://192.168.0.100/#/io-link/devices/1) link you should be able to see device that is connected to your TDC-X.
-
-#### IODD file
-IODD XML file is describing how IO-Link devices communicate information to higher level systems or controllers. For needed .xml file use IODD finder to download it [here](https://ioddfinder.io-link.com/productvariants/search/42370). 
-
-#### IODD file upload on TDC-X
-
-Go to IO-Link tab and open IODD File Management, you can find it [here](http://192.168.0.100/#/io-link/iodd-file-management). Simply click upload and choose the file you need.
-
-![iodd_file_management](/application-examples/Flow-Based-Monitoring/img/iodd_file_upload.png)
-This is how your screen should look like after uploading the file correctly.
-
-_**NOTE:** To download the file, make sure you read [this](#iodd-file) section._
-
-Now if you head back to IO-Link tab ([link](http://192.168.0.100/#/io-link/devices/1)) and click IODD view, much more detailed and profiled data will be shown.
-
-![iodd view](/application-examples/Flow-Based-Monitoring/img/iodd_view.png)
-This is how screen should look like after clicking IODD view.
-
-### MQTT setup
-
-_**NOTE:** Before working with MQTT make sure you have **Mosquitto** application installed._
-
-
-Go to IO-Link tab and find MQTT settings ([link](http://192.168.0.100/#/io-link/MQTT-settings)) and under MQTT configuration section set Client mode active **true** and fill required fields.
-
-#### MQTT configuration fields:
-* **Server IP:** 192.168.0.100
-
-_**NOTE:** For this project we use mosquitto broker on TDC-X, so **Server IP** is TDC-X IP address._
-* **Port:** 1883
-* **Username:** admin
-* **Password:** password
-
-
-_**NOTE:**  Default configuration of internal broker requires no **Username** and **password**._
-* **Keep alive time:** 60
-
-
-
-![MQTT configuration](/application-examples/Flow-Based-Monitoring/img/mqtt_configuration.png)
-
-#### Last will settings:
-* **Topic:** lastWillTopic
-* **Message:** last will message
-* **QoS:** Only Once
-* **Retain:** false
-
-![last will settings](/application-examples/Flow-Based-Monitoring/img/last_will_settings.png)
-
-#### MQTT status:
-If everything is set up correctly under MQTT status connection, once settings are applies, status connection should be accepted.
-
-![MQTT status](/application-examples/Flow-Based-Monitoring/img/mqtt_status.png)
-
-### Send IO-Link data to broker:
-To send data from IO-Link device to broker we have to configure MQTT topics section in IO-Link tab ([link](http://192.168.0.100/#/io-link/MQTT-settings)). 
-
-#### MQTT topics:
-Press **Add topic** button and fill required fields
-* **Port:** Port 1
-* **QoS:** Only Once
-* **Type:** Process data
-* **Direction:** Get data
-* **Format:** Iodd data
-* **Interval:** Interval
-* **Cycle time:** 1000
-* **Topic name:** master1port1/processData
-
-If everything is set up correctly under MQTT topics you should see this.
-![MQTT topics](/application-examples/Flow-Based-Monitoring/img/mqtt_topics.png)
-
-
-This section covers the setup and configuration of all required applications for the monitoring system. Make sure you have the following applications installed and running:
+This section covers the installation of all required applications for the monitoring system. Make sure you have the following applications installed and running:
 
 ### Application Overview
 1. **Node-RED** (port 1880)
@@ -195,6 +115,100 @@ This section covers the setup and configuration of all required applications for
    - Handles pub/sub communication
    - Connects TDC-X to Node-RED
 
+
+### Application Installation
+To install the apps, simply aim to applications tab to find list of applications. Next to application needed, **install** button can be found.
+
+_**NOTE:** To install the listed applications, make sure the TDC-X device is connected to a network._
+
+## MPB10 Sensor Setup
+
+This section covers the configuration and setup of the MPB10 Multi Physics Box sensor with the TDC-X device.
+
+### Information
+The Multi Physics Box MPB10 is a condition monitoring sensor. It is used to detect ambient and/or status conditions of a machine or system, such as vibration, shock and temperature. More information about the sensor you can find [here](https://www.sick.com/be/en/catalog/products/detection-sensors/condition-monitoring-sensors/multi-physics-box/mpb10-vs00vsiq00/p/p670770).
+
+### Key Features
+* Vibration monitoring up to 6 kHz
+* Temperature measurement range: -40°C to +85°C  
+* 3-axis acceleration measurement
+* IO-Link communication interface
+* Compact and robust industrial design
+
+### Connect MPB10 to TDC-X
+Make sure that sensor is plugged to your TDC-X device, which has multiple interfaces for IO-Link devices, we are assuming that you connected it to port 1. Now if you click [this](http://192.168.0.100/#/io-link/devices/1) link you should be able to see device that is connected to your TDC-X.
+
+### IODD file
+IODD XML file is describing how IO-Link devices communicate information to higher level systems or controllers. For needed .xml file use IODD finder to download it [here](https://ioddfinder.io-link.com/productvariants/search/42370). 
+
+### IODD file upload on TDC-X
+
+Go to IO-Link tab and open IODD File Management, you can find it [here](http://192.168.0.100/#/io-link/iodd-file-management). Simply click upload and choose the file you need.
+
+![iodd_file_management](/application-examples/Flow-Based-Monitoring/img/iodd_file_upload.png)
+This is how your screen should look like after uploading the file correctly.
+
+_**NOTE:** To download the file, make sure you read [this](#iodd-file) section._
+
+Now if you head back to IO-Link tab ([link](http://192.168.0.100/#/io-link/devices/1)) and click IODD view, much more detailed and profiled data will be shown.
+
+![iodd view](/application-examples/Flow-Based-Monitoring/img/iodd_view.png)
+This is how screen should look like after clicking IODD view.
+
+## MQTT Setup
+
+**NOTE:** Before working with MQTT make sure you have ```Mosquitto``` application installed.
+
+Go to IO-Link tab and find MQTT settings ([link](http://192.168.0.100/#/io-link/MQTT-settings)) and under MQTT configuration section set Client mode active ```true``` and fill required fields.
+
+### MQTT configuration fields:
+* **Server IP:** 192.168.0.100
+
+_**NOTE:** For this project we use mosquitto broker on TDC-X, so **Server IP** is TDC-X IP address._
+* **Port:** 1883
+* **Username:** admin
+* **Password:** password
+
+**NOTE:**  Default configuration of internal broker does not require ```Username``` and ```Password```.
+* **Keep alive time:** 60
+
+![MQTT configuration](/application-examples/Flow-Based-Monitoring/img/mqtt_configuration.png)
+
+### Last Will Settings:
+* **Topic:** lastWillTopic
+* **Message:** last will message
+* **QoS:** Only Once
+* **Retain:** false
+
+![last will settings](/application-examples/Flow-Based-Monitoring/img/last_will_settings.png)
+
+### MQTT Status:
+If everything is set up correctly under MQTT status connection, once settings are applies, status connection should be accepted.
+
+![MQTT status](/application-examples/Flow-Based-Monitoring/img/mqtt_status.png)
+
+### Send IO-Link Data To Broker:
+To send data from IO-Link device to broker we have to configure MQTT topics section in IO-Link tab ([link](http://192.168.0.100/#/io-link/MQTT-settings)). 
+
+### MQTT Topics:
+Press **Add topic** button and fill required fields
+* **Port:** Port 1
+* **QoS:** Only Once
+* **Type:** Process data
+* **Direction:** Get data
+* **Format:** Iodd data
+* **Interval:** Interval
+* **Cycle time:** 1000
+* **Topic name:** master1port1/processData
+
+If everything is set up correctly under MQTT topics you should see this.
+
+![MQTT topics](/application-examples/Flow-Based-Monitoring/img/mqtt_topics.png)
+
+## Application setup
+
+This section covers the setup and configuration of all required applications for the monitoring system. Make sure you have the following applications installed and running:
+
 #### Installation Verification
 Before proceeding with configuration, verify that:
 - All applications are installed on TDC-X
@@ -208,7 +222,7 @@ For detailed installation instructions, refer to the [Application Installation G
 ### InfluxDB 
 
 InfluxDB is the time series data platform designed to handle high write and query workloads.
-Make sure to install it using **Applications** tab, after that you can access its UI on port **8086**. 
+Make sure to install it using ```Applications``` tab, after that you can access its UI on port ```8086``` 
 
 #### Configuration
 
@@ -216,7 +230,7 @@ Make sure to install it using **Applications** tab, after that you can access it
 Picture shows how the Initial User is configured for this example.
 
 
-Enter preferred username, password, organization name and bucket name. ***Bucket*** is where your time series data is stored with a retention policy.
+Enter preferred username, password, organization name and bucket name. ```Bucket``` is where your time series data is stored with a retention policy.
 
 _**NOTE:** **READ THIS PART.**_
 After initial user setup API token will be shown.
@@ -224,7 +238,7 @@ This part is really important because you won't be able to see token after you c
 
 ### Node-Red 
 Low-code programming for event-driven applications.
-Make sure to install it using **Applications** tab, after that you can access its UI on port **1880**. 
+Make sure to install it using ```Applications``` tab, after that you can access its UI on port ```1880``` 
 
 #### Configuration
 This section will explain how to setup and configure node-red.
@@ -251,11 +265,11 @@ This section will explain how to setup and configure node-red.
 
 Make sure to insert credentials to authenticate for TDC-X API calls.
 
-* Double-click on ***credentials***
+* Double-click on ```credentials```
 
 ![credentials node](/application-examples/Flow-Based-Monitoring/img/node-red_credentials_node.png)
 
-* Change ***tdcx-username*** and ***tdcx-password*** to credentials used for your TDC-X device.
+* Change ```tdcx-username``` and ```tdcx-password``` to credentials used for your TDC-X device.
 
 ![change tdcx credentials](/application-examples/Flow-Based-Monitoring/img/node-red_credentials.png)
 
@@ -266,14 +280,14 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 
 **NOTE:** Follow steps below only if your IP address is not default (192.168.0.100)
 
-* Open ***tdc-x stats endpoint*** node.
+* Open ```tdc-x stats endpoint``` node.
 
 ![node-red stats endpoint ](/application-examples/Flow-Based-Monitoring/img/node-red_stats_node.png)
 
 * Change IP address that suits device.
 
 ![tdc-x stats endpoint](/application-examples/Flow-Based-Monitoring/img/tdc-x_stats_link.png)
-* Open ***tdc-x auth endpoint*** node.
+* Open ```tdc-x auth endpoint``` node.
 
 ![node-red auth endpoint ](/application-examples/Flow-Based-Monitoring/img/node-red_auth_node.png)
 
@@ -281,7 +295,7 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 
 ![tdc-x auth endpoint](/application-examples/Flow-Based-Monitoring/img/tdc-x_auth_link.png)
 
-* Open ***influxdb-write*** node.
+* Open ```influxdb-write``` node.
 
 ![node-red influx endpoint](/application-examples/Flow-Based-Monitoring/img/node-red_influxdb_write_node.png)
 
@@ -289,7 +303,7 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 
 ![influxdb write endpoint](/application-examples/Flow-Based-Monitoring/img/node-red_influxdb_write.png)
 
-* Check ***Use authentication***, type is ***bearer*** and under ***token*** field insert your InfluxDB token.
+* Check ```Use authentication``` type is ```bearer``` and under ```token``` field insert your InfluxDB token.
 
 ![influxdb write auth](/application-examples/Flow-Based-Monitoring/img/node-red_influxdb_auth.png)
 
@@ -310,7 +324,7 @@ http://{DEVICE_IP}:8086/api/v2/write?org=<influxdb organisation name>&bucket={<i
 
 #### Start Application
 
-To start node-red flow press red ***Deploy*** button on top right side of the screen.
+To start node-red flow press red ```Deploy``` button on top right side of the screen.
 
 #### JSON structure. 
 This section shows parsed data that flows to InfluxDB.
@@ -348,12 +362,9 @@ This section shows parsed data that flows to InfluxDB.
 }
 ```
 
- 
-
-
 ### InfluxDB Dashboard configuration 
 
-InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on **create dashboard** button, choose new dashboard, then click on **add cell**.
+InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on ```create dashboard``` button, choose new dashboard, then click on ```add cell```
 
 Instead of creating new one, you can import the dashboard created for this example, download it from [here](/application-examples/Flow-Based-Monitoring/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
 
@@ -364,16 +375,16 @@ In the left corner under queries choose the source (bucket) and then you can fil
 
 ![dashboard setup](/application-examples/Flow-Based-Monitoring/img/dashboard-setup.png)
 
-**NOTE:** Refreshing interval can be changed to 1s by clicking on refresh button and hardcore type the 1s value.
+**NOTE:** Refreshing interval can be changed to 1s by clicking on refresh button and type the 1s value.
 
 ### Grafana 
 
 Grafana Cloud is a highly available, fast, fully-managed OpenSaaS logging, metrics, traces, and profiling platform that also provides incident management and our application monitoring service.
-Make sure to install it using **Applications** tab, after that you can access its UI on port **3000**. 
+Make sure to install it using ```Applications``` tab, after that you can access its UI on port ```3000``` 
 
 #### Setup
 
-To access data from influxd, **data source** has to be created. Go to **connections** and **Data sources**, then choose **InfluxDB** as a source.
+To access data from influxd, ```data source``` has to be created. Go to ```connections``` and ```Data sources``` then choose ```InfluxDB``` as a source.
 
 Look at the picture down below for guidance how to setup datasource, make sure to check your TDC-X IP address.
 
@@ -381,8 +392,11 @@ Look at the picture down below for guidance how to setup datasource, make sure t
 
 Created data source gives you many possibilities to create various dashboards and graphs in Grafana.  
 
+#### Dashboard configuration
+
+Dashboard created for this demonstration purposes shows MPB sensor data and TDC-X monitoring data.
+
+Grafana dashboard import files are available [here](/application-examples/Flow-Based-Monitoring/src/grafana_dashboard.json). If you want to use them go to ```Dashboards → New → import``` then simply paste the JSON code or load the JSON file.
+
 ![dashboard in grafana](/application-examples/Flow-Based-Monitoring/img/grafana_dashboard.png)
 
-Dashboard created for this demonstration purposes, shows MPB sensor data and TDC-X monitoring data.
-
-Grafana dashboard import files are available [here](/application-examples/Flow-Based-Monitoring/src/grafana_dashboard.json). If you want to use them go to **Dashboards → New → import**, then simply paste the JSON code or load the JSON file.
