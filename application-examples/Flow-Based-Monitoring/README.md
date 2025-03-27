@@ -240,7 +240,7 @@ This section will explain how to setup and configure node-red.
 
 ![node-red import](/application-examples/Flow-Based-Monitoring/img/node-red_import.png)
 
-* Paste the JSON configuration available [here](/application-examples/src/nodered_flow.json) and click import.
+* Paste the JSON configuration available [here](/application-examples/Flow-Based-Monitoring/src/nodered_flow.json) and click import.
 
 ![import nodes](/application-examples/Flow-Based-Monitoring/img/import_nodes.png)
 
