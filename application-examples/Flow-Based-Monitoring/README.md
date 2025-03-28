@@ -229,12 +229,12 @@ Make sure to install it using ```Applications``` tab, after that you can access 
 ![influx initial user](/application-examples/Flow-Based-Monitoring/img/influx_initial_user.png)
 Picture shows how the Initial User is configured for this example.
 
-
 Enter preferred username, password, organization name and bucket name. ```Bucket``` is where your time series data is stored with a retention policy.
 
 _**NOTE:** **READ THIS PART.**_
-After initial user setup API token will be shown.
-This part is really important because you won't be able to see token after you continue, so copy the token and save it somewhere local in Notepad++ or any other text processor you use. 
+```Initial Organisation Name``` and ```Initial Bucket Name``` will be needed for **Node-Red** part, so please paste it in text editor like Notepad++.
+
+After initial user setup ```API token``` will be shown. This part is really important because you won't be able to see token after you continue, so copy the token and save it somewhere local in Notepad++ or any other text processor you use. 
 
 ### Node-Red 
 Low-code programming for event-driven applications.
@@ -299,9 +299,14 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 
 ![node-red influx endpoint](/application-examples/Flow-Based-Monitoring/img/node-red_influxdb_write_node.png)
 
-* Change IP address based on your InfluxDB configuration, InfluxDB API is explained [here](#influxdb-endpoint)
+* Change URL address based on your InfluxDB configuration, InfluxDB API is explained [here](#influxdb-endpoint)
+   * **Change properties down below**
+  * ```org=<organisation-name-from-InfluxDB>```
+  * ```bucket=<bucket-name-from-InfluxDB>```
 
 ![influxdb write endpoint](/application-examples/Flow-Based-Monitoring/img/node-red_influxdb_write.png)
+
+
 
 * Check ```Use authentication``` type is ```bearer``` and under ```token``` field insert your InfluxDB token.
 
@@ -364,16 +369,13 @@ This section shows parsed data that flows to InfluxDB.
 
 ### InfluxDB Dashboard configuration 
 
-InfluxDB also offers very quick dashboard configuration so one will be demonstrated here. Access InfluxDB UI on port 8086, go to Dashboards tab and click on ```create dashboard``` button, choose new dashboard, then click on ```add cell```
+InfluxDB also offers very quick dashboard configurations. Access InfluxDB UI on port 8086, go to Dashboards tab ```Create Dashboard → Import Dashboard``` and simply upload or paste JSON code available [here](/application-examples/Flow-Based-Monitoring/src/influxdb_dashboard.json)
 
-Instead of creating new one, you can import the dashboard created for this example, download it from [here](/application-examples/Flow-Based-Monitoring/src/influxdb_dashboard.json). For this example we will use Gauge chart which will nicely represent x, y and z values.
+![import daashboard](/application-examples/Flow-Based-Monitoring/img/influxdb-import.png)
 
+This is dashboard easily created for demonstrating purposes. Represents MPB10 values alongside with TDC-X monitoring data.
 
-![cell editing](/application-examples/Flow-Based-Monitoring/img/cell-setup.png)
-
-In the left corner under queries choose the source (bucket) and then you can filter the data based on the JSON file inserted into it. Multiple filters can be applied, since speedometer will be demonstrated then three separated gauges will be created for each value. Dashboard should look like picture down below if steps were followed correctly.
-
-![dashboard setup](/application-examples/Flow-Based-Monitoring/img/dashboard-setup.png)
+![InfluxDB dashboard](/application-examples/Flow-Based-Monitoring/img/influxdb_dashboard_setup.png)
 
 **NOTE:** Refreshing interval can be changed to 1s by clicking on refresh button and type the 1s value.
 
@@ -386,9 +388,31 @@ Make sure to install it using ```Applications``` tab, after that you can access 
 
 To access data from influxd, ```data source``` has to be created. Go to ```connections``` and ```Data sources``` then choose ```InfluxDB``` as a source.
 
-Look at the picture down below for guidance how to setup datasource, make sure to check your TDC-X IP address.
+Look at the picture down below for guidance how to setup datasource.
 
 ![influxdb data source in grafana](/application-examples/Flow-Based-Monitoring/img/grafana_influxdb_source.png)
+
+##### Query language:
+* Name: ```Flux```
+
+##### HTTP:
+* URL: ```192.168.0.100:8086``` (InfluxDB URL)
+* Allowed Cookies: empty
+* Timeout: ```-1```
+
+##### Auth:
+* Basic Auth: ```true```
+
+##### Basic Auth Details:
+* User: ```admin``` (InfluxDB username)
+* Password: ```password``` (InfluxDB password)
+
+##### InfluxDB Details:
+* Organisation: ```SICK``` (InfluxDB organisation)
+* Token: ```token``` (InfluxDB token)
+* Default Bucket: ```data``` (InfluxDB bucket)
+
+Press save and test button and you should get green notification if everything is set up correctly.
 
 Created data source gives you many possibilities to create various dashboards and graphs in Grafana.  
 
@@ -398,5 +422,20 @@ Dashboard created for this demonstration purposes shows MPB sensor data and TDC-
 
 Grafana dashboard import files are available [here](/application-examples/Flow-Based-Monitoring/src/grafana_dashboard.json). If you want to use them go to ```Dashboards → New → import``` then simply paste the JSON code or load the JSON file.
 
+Dashboard should look like the image below after you press refresh button.
+
 ![dashboard in grafana](/application-examples/Flow-Based-Monitoring/img/grafana_dashboard.png)
 
+#### Dashboard Not Working
+
+* Click on three dots over a graph
+
+* Press ```Edit``` button
+
+![edit graph](/application-examples/Flow-Based-Monitoring/img/grafana_edit_graph.png)
+
+* Press ```Refresh``` button multiple times
+
+![refresh graph ](/application-examples/Flow-Based-Monitoring/img/grafana_refresh_graph.png)
+
+This should do the trick.
