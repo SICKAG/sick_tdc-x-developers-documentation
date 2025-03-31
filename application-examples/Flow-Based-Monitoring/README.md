@@ -272,6 +272,7 @@ Make sure to insert credentials to authenticate for TDC-X API calls.
 * Change ```tdcx-username``` and ```tdcx-password``` to credentials used for your TDC-X device.
 
 ![change tdcx credentials](/application-examples/Flow-Based-Monitoring/img/node-red_credentials.png)
+![alt text](node-red_credentials.png)
 
 
 ##### HTTP requests
@@ -287,6 +288,7 @@ TDC-X group is connecting to TDC-X REST API to authenticate and get TDC-X and MP
 * Change IP address that suits device.
 
 ![tdc-x stats endpoint](/application-examples/Flow-Based-Monitoring/img/tdc-x_stats_link.png)
+
 * Open ```tdc-x auth endpoint``` node.
 
 ![node-red auth endpoint ](/application-examples/Flow-Based-Monitoring/img/node-red_auth_node.png)
