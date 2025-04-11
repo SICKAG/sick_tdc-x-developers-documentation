@@ -28,6 +28,7 @@ services:
       - sqlite_data:/app
     user: root
     privileged: true
+    restart: always  
 
 volumes:
   grafana_data:
