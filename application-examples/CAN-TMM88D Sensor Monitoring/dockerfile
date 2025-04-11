@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1
+
+ARG BUILDER_STAGE_IMAGE=golang:latest
+FROM ${BUILDER_STAGE_IMAGE} AS builder
+
+WORKDIR /app/
+
+COPY . .
+RUN go mod tidy
+RUN GOARCH=arm64 go build -o cango ./cmd/main.go
+
+FROM arm64v8/ubuntu:latest
+
+COPY --from=builder /app/cango /app/
+
+RUN apt-get update && apt-get install -y iproute2
+
+RUN chmod +x /app/cango
+
+CMD ["/app/cango"]

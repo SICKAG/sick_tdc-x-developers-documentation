@@ -1,0 +1,145 @@
+/**
+ * CAN service.
+ *
+ * Service that enables a control of the CAN features of device
+ */
+syntax = "proto3";
+
+package hal.can;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "./protos;protos";
+
+enum BusStates {
+  ERROR_ACTIVE = 0;
+  ERROR_WARNING = 1;
+  ERROR_PASSIVE = 2;
+  BUS_OFF = 3;
+  STOPPED = 4;
+  SLEEPING = 5;
+}
+
+// Request to set transceiver power
+message SetTransceiverPowerRequest { 
+  string interfaceName = 1; // e.g., "CAN1" 
+  bool powerOn = 2; // true to power on, false to power off
+}
+
+// Request to enable or disable termination
+message SetTerminationRequest {
+  string interfaceName = 1; // e.g., "CAN1"
+  bool enableTermination = 2; // true to enable, false to disable
+}
+
+// Request to list available CAN interfaces
+message ListInterfacesRequest {}
+
+// Response containing the list of CAN interfaces
+message ListInterfacesResponse {
+  repeated string interfaces = 1; // List of available interface names (e.g., ["CAN1", "CAN2"])
+}
+
+// Genereric request containing the name of the interface
+message GetInterfaceNameRequest {
+  string interfaceName = 1;  // e.g., "CAN1"
+}
+
+// Response containing power status of a CAN transceiver
+message GetTransceiverPowerResponse {
+  bool powerOn = 1; // true if enabled, otherwise false
+}
+
+// Response containing status of a CAN termination pin
+message GetTerminationResponse {
+  bool terminationEnabled = 1; // true if enabled, otherwise false
+}
+
+// Response containing the statistics of a CAN interface
+message GetStatisticsResponse {
+	uint64 RxPackets = 1;
+	uint64 TxPackets = 2;
+	uint64 RxBytes = 3;
+	uint64 TxBytes = 4;
+	uint64 RxErrors = 5;
+	uint64 TxErrors = 6;
+	uint64 RxDropped = 7;
+	uint64 TxDropped = 8;
+	uint64 Multicast = 9;
+	uint64 Collisions = 10;
+	uint64 RxLengthErrors = 11;
+	uint64 RxOverErrors = 12;
+	uint64 RxCrcErrors = 13;
+	uint64 RxFrameErrors = 14;
+	uint64 RxFifoErrors = 15;
+	uint64 RxMissedErrors = 16;
+	uint64 TxAbortedErrors = 17;
+	uint64 TxCarrierErrors = 18;
+	uint64 TxFifoErrors = 19;
+	uint64 TxHeartbeatErrors = 20;
+	uint64 TxWindowErrors = 21;
+	uint64 RxCompressed = 22;
+	uint64 TxCompressed = 23;
+}
+
+// Response containing the bitrate of a CAN interface
+message GetBitrateResponse {
+  uint32 bitrate = 1; // Number of transmitted frames
+}
+
+// Response containing the bitrate of a CAN interface
+message GetBusStateResponse {
+  BusStates state = 1; // Number of transmitted frames
+}
+
+// Request containing parameters for SetInterfaceToContainer method
+message SetInterfaceToContainerRequest {
+  string interfaceName = 1;  // e.g., "CAN1"
+  string dockerContainerName = 2;  // e.g., "app-engine", leave empty to move to host
+}
+
+// Represents a mapping of interface to docker container
+message InterfaceToContainerMapping {
+  string interfaceName = 1;  // e.g., "CAN1"
+  string dockerContainerName = 2;  // e.g., "app-engine", if empty string then interface is mapped to host
+}
+
+// Response contains mapping of interfaces to docker containers
+message GetInterfaceToContainerMappingResponse {
+  repeated InterfaceToContainerMapping items = 1; // List of interface to docker container mappings 
+}
+
+/**
+ * Service exposing CAN functions.
+ */
+service Can {
+  // Gets the state of transceiver power
+  rpc GetTransceiverPower(GetInterfaceNameRequest) returns (GetTransceiverPowerResponse);
+
+  // Gets the state of termination
+  rpc GetTermination(GetInterfaceNameRequest) returns (GetTerminationResponse);
+
+  // Sets the transceiver power (on/off)
+  rpc SetTransceiverPower(SetTransceiverPowerRequest) returns (google.protobuf.Empty) {}
+
+  // Enables or disables CAN termination
+  rpc SetTermination(SetTerminationRequest) returns (google.protobuf.Empty) {}
+
+  // Lists available CAN interfaces
+  rpc ListInterfaces(ListInterfacesRequest) returns (ListInterfacesResponse) {}
+
+  // Gets the CAN interface statistics
+  rpc GetStatistics(GetInterfaceNameRequest) returns (GetStatisticsResponse) {}
+
+  // Gets the CAN interface bitrate
+  rpc GetBitrate(GetInterfaceNameRequest) returns (GetBitrateResponse) {}
+
+  // Gets the CAN interface state
+  rpc GetBusState(GetInterfaceNameRequest) returns (GetBusStateResponse) {}
+
+  // Moves specified interface into namespace of a specified docker container
+  rpc SetInterfaceToContainer(SetInterfaceToContainerRequest) returns (google.protobuf.Empty) {}
+
+  // Returns mapping of interfaces onto docker containers
+  rpc GetInterfaceToContainerMapping(google.protobuf.Empty) returns (GetInterfaceToContainerMappingResponse) {}
+}

@@ -1,0 +1,39 @@
+version: '3'
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana_for_sqlite
+    environment:
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=frser-sqlite-datasource
+      - GF_INSTALL_PLUGINS=frser-sqlite-datasource
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - sqlite_data:/app
+    networks:
+      - grafana-network
+    restart: always  
+
+  can_app:
+    image: can_app:latest
+    container_name: tmm_can_app
+    depends_on:
+      - grafana
+    environment:
+      - TDCX_ADDRESS=192.168.0.100
+      - TDCX_USERNAME=admin
+      - TDCX_PASSWORD=adminadmin123X.
+    volumes:
+      - sqlite_data:/app
+    user: root
+    privileged: true
+
+volumes:
+  grafana_data:
+    driver: local
+  sqlite_data:
+
+networks:
+  grafana-network:
+    driver: bridge
