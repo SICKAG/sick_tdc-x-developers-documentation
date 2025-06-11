@@ -387,6 +387,18 @@ Grafana Cloud is a highly available, fast, fully-managed OpenSaaS logging, metri
 Make sure to install it using ```Applications``` tab, after that you can access its UI on port ```3000``` 
 
 #### Setup
+Once you open Grafana App for the first time, it will ask you for initial credentials. 
+
+![initial credentials](img/grafana-initial.png)
+
+##### Initial Grafana Auth Details:
+* Email or username: ```admin```
+* Password: ```admin```
+_**NOTE:** These are initial credentials and they will work first time upon opening grafana._
+
+After you enter initial auth details, then you will be asked to create more secure password.
+
+#### InfluxDB connection
 
 To access data from influxd, ```data source``` has to be created. Go to ```connections``` and ```Data sources``` then choose ```InfluxDB``` as a source.
 
