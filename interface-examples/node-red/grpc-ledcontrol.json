@@ -1,0 +1,453 @@
+[
+    {
+        "id": "29e3ecfa4a11501d",
+        "type": "tab",
+        "label": "grpc-ledcontrol",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "30f48a2f5f452524",
+        "type": "group",
+        "z": "29e3ecfa4a11501d",
+        "name": "",
+        "style": {
+            "label": true,
+            "stroke": "#3f93cf"
+        },
+        "nodes": [
+            "33981f596bd9769e",
+            "da15a708fba93850",
+            "d37bb2773fc1a68c",
+            "9bc1020ff3bef718",
+            "adb4a3f5e14fba4c",
+            "ef4920fa4afbc080",
+            "2abaadfbfc618941",
+            "2bc9b916c5e7939b",
+            "897185dbb4bb5afb"
+        ],
+        "x": 54,
+        "y": 279,
+        "w": 552,
+        "h": 362
+    },
+    {
+        "id": "32e63055438d8265",
+        "type": "group",
+        "z": "29e3ecfa4a11501d",
+        "name": "",
+        "style": {
+            "stroke": "#3f93cf",
+            "label": true
+        },
+        "nodes": [
+            "8ff9da38d1b5e878",
+            "b72aa4ee061817a2",
+            "835645756abbbf83",
+            "0f1fed9f5afe6332"
+        ],
+        "x": 634,
+        "y": 119,
+        "w": 552,
+        "h": 142
+    },
+    {
+        "id": "7ef8da9342145e3a",
+        "type": "group",
+        "z": "29e3ecfa4a11501d",
+        "name": "",
+        "style": {
+            "stroke": "#bfdbef",
+            "label": true
+        },
+        "nodes": [
+            "c8de3e5c6125c792",
+            "2bf12445634b0c9c",
+            "454dc15397986dde",
+            "cb9d8d7a8ecb558e"
+        ],
+        "x": 54,
+        "y": 119,
+        "w": 552,
+        "h": 142
+    },
+    {
+        "id": "33981f596bd9769e",
+        "type": "comment",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "write LEDs states",
+        "info": "",
+        "x": 160,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8ff9da38d1b5e878",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "32e63055438d8265",
+        "name": "timestamp",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT1\"}",
+        "payloadType": "json",
+        "x": 740,
+        "y": 220,
+        "wires": [
+            [
+                "835645756abbbf83"
+            ]
+        ]
+    },
+    {
+        "id": "b72aa4ee061817a2",
+        "type": "debug",
+        "z": "29e3ecfa4a11501d",
+        "g": "32e63055438d8265",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "835645756abbbf83",
+        "type": "grpc-call",
+        "z": "29e3ecfa4a11501d",
+        "g": "32e63055438d8265",
+        "name": "",
+        "server": "cf1cdf3136bb1c17",
+        "service": "LedControl",
+        "method": "GetState",
+        "chain": "",
+        "key": "",
+        "x": 910,
+        "y": 220,
+        "wires": [
+            [
+                "b72aa4ee061817a2"
+            ]
+        ]
+    },
+    {
+        "id": "0f1fed9f5afe6332",
+        "type": "comment",
+        "z": "29e3ecfa4a11501d",
+        "g": "32e63055438d8265",
+        "name": "read LED (FUNCT1) state",
+        "info": "",
+        "x": 770,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c8de3e5c6125c792",
+        "type": "grpc-call",
+        "z": "29e3ecfa4a11501d",
+        "g": "7ef8da9342145e3a",
+        "name": "",
+        "server": "cf1cdf3136bb1c17",
+        "service": "LedControl",
+        "method": "ListLeds",
+        "chain": "",
+        "key": "",
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "454dc15397986dde"
+            ]
+        ]
+    },
+    {
+        "id": "2bf12445634b0c9c",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "7ef8da9342145e3a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 220,
+        "wires": [
+            [
+                "c8de3e5c6125c792"
+            ]
+        ]
+    },
+    {
+        "id": "454dc15397986dde",
+        "type": "debug",
+        "z": "29e3ecfa4a11501d",
+        "g": "7ef8da9342145e3a",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4585b229daff0f70",
+        "type": "comment",
+        "z": "29e3ecfa4a11501d",
+        "name": "NOTE: Download correct grpc-node!",
+        "info": "Make sure to install the **custom node-red-contrib-grpc-1.2.7.tgz** node as described in the Developers Documentation on:\n\n`http://{YOUR_DEVICE_IP}/docs/tdc-x/getting-started/grpc-usage#6-additional-notes`\n\nUsing the Palette version of this node **will not work**!",
+        "x": 200,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "da15a708fba93850",
+        "type": "grpc-call",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "",
+        "server": "cf1cdf3136bb1c17",
+        "service": "LedControl",
+        "method": "SetState",
+        "chain": "",
+        "key": "",
+        "x": 350,
+        "y": 400,
+        "wires": [
+            [
+                "d37bb2773fc1a68c"
+            ]
+        ]
+    },
+    {
+        "id": "d37bb2773fc1a68c",
+        "type": "debug",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9bc1020ff3bef718",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT1 On",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT1\", \"state\":true}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 400,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "adb4a3f5e14fba4c",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT1 Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT1\", \"state\":false}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "cb9d8d7a8ecb558e",
+        "type": "comment",
+        "z": "29e3ecfa4a11501d",
+        "g": "7ef8da9342145e3a",
+        "name": "list ledNames",
+        "info": "",
+        "x": 150,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "ef4920fa4afbc080",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT2 On",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT2\", \"state\":true}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 480,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "2abaadfbfc618941",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT2 Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT2\", \"state\":false}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 520,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "2bc9b916c5e7939b",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT3 On",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT3\", \"state\":true}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 560,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "897185dbb4bb5afb",
+        "type": "inject",
+        "z": "29e3ecfa4a11501d",
+        "g": "30f48a2f5f452524",
+        "name": "FUNCT3 Off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ledName\":\"FUNCT3\", \"state\":false}",
+        "payloadType": "json",
+        "x": 170,
+        "y": 600,
+        "wires": [
+            [
+                "da15a708fba93850"
+            ]
+        ]
+    },
+    {
+        "id": "cf1cdf3136bb1c17",
+        "type": "grpc-server",
+        "server": "unix:///var/run/hal/hal.sock",
+        "name": "grpc-ledcontrol",
+        "protoFile": "/**\n * LED Control Service.\n *\n * Service that enables user to control LEDs\n */\n\nsyntax = \"proto3\";\n\npackage hal.ledcontrol;\n\nimport \"google/protobuf/empty.proto\";\n\noption go_package = \"./protos;protos\";\n\nservice LedControl {\n    // List all available LEDs\n    rpc ListLeds(google.protobuf.Empty) returns (LedListResponse);\n\n    // List all available triggers\n    rpc ListAvailableTriggers(google.protobuf.Empty) returns (ListAvailableTriggersResponse);\n\n    // Get the current state of a specific LED\n    rpc GetState(LedNameRequest) returns (LedStateResponse);\n \n    // Set trigger of a specific LED\n    rpc SetTrigger(LedTriggerRequest) returns (google.protobuf.Empty);\n \n    // Turn a specific LED on or off\n    rpc SetState(SetStateRequest) returns (google.protobuf.Empty);\n}\n \nmessage LedNameRequest {\n    string ledName = 1;\n}\n\nmessage TriggerRequest {\n    string trigger = 1;\n}\n \nmessage LedListResponse {\n    repeated LedNameRequest ledNames = 1;\n}\n\nenum OnState {\n    OFF = 0;\n    ON = 1;\n    ERR = 2;\n}\n\nmessage ListAvailableTriggersResponse {\n    repeated string triggers = 1;\n}\n\nmessage LedStateResponse {\n    OnState state = 1;\n    string trigger = 2;\n    optional string color = 3;\n}\n\nmessage LedTriggerRequest {\n    string ledName = 1;\n    string trigger = 2;\n}\n\nmessage SetStateRequest {\n    string ledName = 1;\n    bool state = 2;\n    optional string color = 3;\n}",
+        "ca": "",
+        "chain": "",
+        "key": "",
+        "mutualTls": false,
+        "ssl": false,
+        "selfsigned": false,
+        "localServer": false
+    }
+]
