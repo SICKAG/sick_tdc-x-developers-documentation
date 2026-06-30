@@ -26,5 +26,7 @@ Future support planned for additional BaseOS compatible platforms.
 
 Use Device Application Template to upload and install this app.
 
+Use link to download app - https://repo.cloud.sick.com/artifacts/e65d2b92-f536-4873-8151-e48477c223cd/download
+
 
 
